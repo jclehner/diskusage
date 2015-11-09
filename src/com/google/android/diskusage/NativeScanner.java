@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.PriorityQueue;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 
 import com.google.android.diskusage.DiskUsage.ProgressGenerator;
@@ -100,7 +101,8 @@ public class NativeScanner implements ProgressGenerator {
   
   public void unpackScanBinary() throws IOException {
     byte[] buffer = new byte[32768];
-    InputStream is = context.getAssets().open("scan");
+    InputStream is = context.getAssets().open(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP
+			? "scan-nopie" : "scan-pie");
     FileOutputStream os = new FileOutputStream(getScanBinaryPath());
     int len;
     while ((len = is.read(buffer)) != -1) {
